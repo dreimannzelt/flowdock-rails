@@ -47,6 +47,7 @@ module Flowdock
         subject: "#{self.class.model_name.human} created",
         content: %Q{
           <h2>#{self.class.model_name.human} created</h2>
+          <h3>Attributes</h3>
           <pre>#{JSON.pretty_generate(self.attributes)}</pre>
         },
         tags: [self.class.model_name.param_key, "resource", "created"]
@@ -58,7 +59,10 @@ module Flowdock
         subject: "#{self.class.model_name.human} updated",
         content: %Q{
           <h2>#{self.class.model_name.human} updated</h2>
+          <h3>Changes</h3>
           <pre>#{JSON.pretty_generate(self.changes)}</pre>
+          <h3>Attributes</h3>
+          <pre>#{JSON.pretty_generate(self.attributes)}</pre>
         },
         tags: [self.class.model_name.param_key, "resource", "updated"]
       )
