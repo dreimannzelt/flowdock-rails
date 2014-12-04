@@ -6,30 +6,6 @@ module Flowdock
   module Rails
     extend ActiveSupport::Concern
 
-    included do
-      def push_create_notification_to_flow
-        self.class.flow.push_to_team_inbox(
-          subject: "#{self.class.model_name.human} created",
-          content: %Q{
-            <h2>#{self.class.model_name.human} created</h2>
-            <pre>#{JSON.pretty_generate(self.attributes)}</pre>
-          },
-          tags: [self.class.model_name.param_key, "resource", "created"]
-        )
-      end
-
-      def push_update_notification_to_flow
-        self.class.flow.push_to_team_inbox(
-          subject: "#{self.class.model_name.human} updated",
-          content: %Q{
-            <h2>#{self.class.model_name.human} updated</h2>
-            <pre>#{JSON.pretty_generate(self.changes)}</pre>
-          },
-          tags: [self.class.model_name.param_key, "resource", "updated"]
-        )
-      end
-    end
-
     module ClassMethods
       def flow
         api_token = (ENV["FLOWDOCK_RAILS_API_TOKEN"].try(:split, ",") || []).map(&:strip)
@@ -56,6 +32,29 @@ module Flowdock
       end
     end
 
+    private
+
+    def push_create_notification_to_flow
+      self.class.flow.push_to_team_inbox(
+        subject: "#{self.class.model_name.human} created",
+        content: %Q{
+          <h2>#{self.class.model_name.human} created</h2>
+          <pre>#{JSON.pretty_generate(self.attributes)}</pre>
+        },
+        tags: [self.class.model_name.param_key, "resource", "created"]
+      )
+    end
+
+    def push_update_notification_to_flow
+      self.class.flow.push_to_team_inbox(
+        subject: "#{self.class.model_name.human} updated",
+        content: %Q{
+          <h2>#{self.class.model_name.human} updated</h2>
+          <pre>#{JSON.pretty_generate(self.changes)}</pre>
+        },
+        tags: [self.class.model_name.param_key, "resource", "updated"]
+      )
+    end
   end
 end
 
