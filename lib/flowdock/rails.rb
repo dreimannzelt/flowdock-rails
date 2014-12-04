@@ -9,7 +9,6 @@ module Flowdock
     module ClassMethods
       def flow
         api_token = (ENV["FLOWDOCK_RAILS_API_TOKEN"].try(:split, ",") || []).map(&:strip)
-
         @flow ||= Flowdock::Flow.new(
           flowdock_rails_options.reverse_merge(
             api_token: api_token,
@@ -21,6 +20,15 @@ module Flowdock
             }
           )
         )
+      end
+
+      def push_to_flow(options = {})
+        begin
+          flow.push_to_team_inbox(options)
+        rescue Exception => e
+          logger.fatal "[Flowdock::Rails] Something went wrong with pushing to the flow:"
+          logger.fatal "[Flowdock::Rails] #{e}"
+        end
       end
 
       def notify_flow(options = {})
@@ -35,7 +43,7 @@ module Flowdock
     private
 
     def push_create_notification_to_flow
-      self.class.flow.push_to_team_inbox(
+      self.class.push_to_flow(
         subject: "#{self.class.model_name.human} created",
         content: %Q{
           <h2>#{self.class.model_name.human} created</h2>
@@ -46,7 +54,7 @@ module Flowdock
     end
 
     def push_update_notification_to_flow
-      self.class.flow.push_to_team_inbox(
+      self.class.push_to_flow(
         subject: "#{self.class.model_name.human} updated",
         content: %Q{
           <h2>#{self.class.model_name.human} updated</h2>
