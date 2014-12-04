@@ -22,9 +22,17 @@ module Flowdock
         )
       end
 
+      def push_to_flow_enabled?
+        ::Rails.env.production? || ENV["FLOWDOCK_RAILS_ENABLED"] == "true"
+      end
+
       def push_to_flow(options = {})
         begin
-          flow.push_to_team_inbox(options)
+          if push_to_flow_enabled?
+            flow.push_to_team_inbox(options)
+          else
+            logger.info "[Flowdock::Rails] Notification is disabled"
+          end
         rescue Exception => e
           logger.fatal "[Flowdock::Rails] Something went wrong with pushing to the flow:"
           logger.fatal "[Flowdock::Rails] #{e}"
