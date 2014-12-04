@@ -44,6 +44,13 @@ or as ENV:
 
     FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__1,__FLOW_API_TOKEN__2
 
+## TODO
+
+1. Spec, specs, specs, specs!
+2. Option for enabling/disabling specific events (create/update)
+3. Option for notification of deletion
+4. Better documentation on how to override the content for the notifications
+
 
 ## Contributing
 
