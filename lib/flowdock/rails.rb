@@ -1,5 +1,6 @@
 require "flowdock/rails/version"
 require "flowdock"
+require "json"
 
 module Flowdock
   module Rails
@@ -11,9 +12,7 @@ module Flowdock
           subject: "#{self.class.model_name.human} created",
           content: %Q{
             <h2>#{self.class.model_name.human} created</h2>
-            <blockquote>
-              #{self.inspect}
-            </blockquote>
+            <pre>#{JSON.pretty_generate(self.attributes)}</pre>
           },
           tags: [self.class.model_name.param_key, "resource", "created"]
         )
@@ -24,9 +23,7 @@ module Flowdock
           subject: "#{self.class.model_name.human} updated",
           content: %Q{
             <h2>#{self.class.model_name.human} updated</h2>
-            <blockquote>
-              #{self.changes}
-            </blockquote>
+            <pre>#{JSON.pretty_generate(self.changes)}</pre>
           },
           tags: [self.class.model_name.param_key, "resource", "updated"]
         )
@@ -41,6 +38,7 @@ module Flowdock
           flowdock_rails_options.reverse_merge(
             api_token: api_token,
             source: "Flowdock Notifier",
+            project: ::Rails.application.class.parent_name,
             from: {
               name: "Marv",
               address: "marv@dreimannzelt.de"
