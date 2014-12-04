@@ -70,6 +70,10 @@ If a global enabling/disabling mechanism is not sufficient enough for you, just 
 4 Option for notification of deletion
 5. Better documentation on how to override the content for the notifications
 
+## Thanks to
+
+* @flowdock for this amazing product
+* @benedikt for the patches
 
 ## Contributing
 

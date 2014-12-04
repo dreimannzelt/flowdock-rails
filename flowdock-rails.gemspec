@@ -6,7 +6,7 @@ require 'flowdock/rails/version'
 Gem::Specification.new do |spec|
   spec.name          = "flowdock-rails"
   spec.version       = Flowdock::Rails::VERSION
-  spec.authors       = ["Björn Wolf"]
+  spec.authors       = ["Björn Wolf", "Benedikt Deicke"]
   spec.email         = ["bjoern@dreimannzelt.de"]
   spec.description   = "Gem for notifying flows about the creation and updating of ActiveRecord models."
   spec.summary       = "Notify flows of model creations and updates"
