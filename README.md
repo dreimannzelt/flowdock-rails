@@ -44,6 +44,24 @@ or as ENV:
 
     FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__1,__FLOW_API_TOKEN__2
 
+### Enabling/Disabling
+
+It is enabled for production environments per default. You can enable it by setting ENV for other environments:
+
+    FLOWDOCK_RAILS_ENABLED=true
+
+You can also explicitly disable it on production with:
+
+    FLOWDOCK_RAILS_ENABLED=false
+
+If a global enabling/disabling mechanism is not sufficient enough for you, just override it on a per-class basis:
+
+    class Model < ActiveRecord::Base
+      def self.push_to_flow_enabled?
+        false
+      end
+    end
+
 ## TODO
 
 1. Spec, specs, specs, specs!

@@ -23,7 +23,8 @@ module Flowdock
       end
 
       def push_to_flow_enabled?
-        ::Rails.env.production? || ENV["FLOWDOCK_RAILS_ENABLED"] == "true"
+        ( ENV["FLOWDOCK_RAILS_ENABLED"] == "true" ) ||
+        ( !(ENV["FLOWDOCK_RAILS_ENABLED"] == "false") && ::Rails.env.production? )
       end
 
       def push_to_flow(options = {})
