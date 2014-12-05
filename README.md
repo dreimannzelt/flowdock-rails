@@ -1,5 +1,7 @@
 # Flowdock::Rails
 
+[![Gem Version](https://badge.fury.io/rb/flowdock-rails.svg)](http://badge.fury.io/rb/flowdock-rails)
+
 This gem adds a class method to send notifications to specific flows for create and update events on the enabled resource
 
 ## Installation
