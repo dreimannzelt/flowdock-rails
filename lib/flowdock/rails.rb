@@ -81,7 +81,7 @@ module Flowdock
           <h3>Attributes</h3>
           #{formatted_attributes_for_flow self.attributes}
         },
-        tags: [self.class.model_name.param_key, "resource", "created"]
+        tags: [self.class.model_name.param_key, "resource", "created", ::Rails.env]
       )
     end
 
@@ -95,7 +95,7 @@ module Flowdock
           <h3>Attributes</h3>
           #{formatted_attributes_for_flow self.attributes}
         },
-        tags: [self.class.model_name.param_key, "resource", "updated"]
+        tags: [self.class.model_name.param_key, "resource", "updated", ::Rails.env]
       )
     end
   end
