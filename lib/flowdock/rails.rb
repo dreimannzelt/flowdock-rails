@@ -15,8 +15,8 @@ module Flowdock
             source: "Flowdock Notifier",
             project: ( ENV["FLOWDOCK_RAILS_NAME"] || ::Rails.application.class.parent_name ).parameterize,
             from: {
-              name: "Marv",
-              address: "marv@dreimannzelt.de"
+              name: ( ENV["FLOWDOCK_RAILS_FROM_NAME"] || "Marv" ),
+              address: ( ENV["FLOWDOCK_RAILS_FROM_EMAIL"] || "marv@dreimannzelt.de")
             }
           )
         )
