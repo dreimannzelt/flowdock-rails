@@ -22,54 +22,86 @@ Or install it yourself as:
 
 Just put the `notify_flow` method to your model
 
-    class Model < ActiveRecord::Base
-      notify_flow
-    end
+```ruby
+class Model < ActiveRecord::Base
+  notify_flow
+end
+```
 
 and dont forget to set the ENV:
 
-    FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__
+```
+FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__
+```
 
 You can also set the API token directly in your model:
 
-    class Model < ActiveRecord::Base
-      notify_flow api_token: "__FLOW_API_TOKEN__"
-    end
+```ruby
+class Model < ActiveRecord::Base
+  notify_flow api_token: "__FLOW_API_TOKEN__"
+end
+```
 
 and of course your are able to notify multiple flows:
 
-    class Model < ActiveRecord::Base
-      notify_flow api_token: ["__FLOW_API_TOKEN__1", "__FLOW_API_TOKEN__2"]
-    end
+```ruby
+class Model < ActiveRecord::Base
+  notify_flow api_token: ["__FLOW_API_TOKEN__1", "__FLOW_API_TOKEN__2"]
+end
+```
 
 or as ENV:
 
-    FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__1,__FLOW_API_TOKEN__2
+```
+FLOWDOCK_RAILS_API_TOKEN=__FLOW_API_TOKEN__1,__FLOW_API_TOKEN__2
+```
 
-### Enabling/Disabling
+### Enabling and Disabling
 
 It is enabled for production environments per default. You can enable it by setting ENV for other environments:
 
-    FLOWDOCK_RAILS_ENABLED=true
+```
+FLOWDOCK_RAILS_ENABLED=true
+```
 
 You can also explicitly disable it on production with:
 
-    FLOWDOCK_RAILS_ENABLED=false
+```
+FLOWDOCK_RAILS_ENABLED=false
+```
 
 If a global enabling/disabling mechanism is not sufficient enough for you, just override it on a per-class basis:
 
-    class Model < ActiveRecord::Base
-      def self.push_to_flow_enabled?
-        false
-      end
-    end
+```ruby
+class Model < ActiveRecord::Base
+  def self.push_to_flow_enabled?
+    false
+  end
+end
+```
+
+#### WARNING !!!
+
+It's force-disabled on RAILS_ENV=test by default. Currently there is no way to enable it besides overriding the class method `self.push_to_flow_enabled?`
+
+### All ENV variables
+
+| Variable | Description | Default |
+|---|---|---|
+| FLOWDOCK_RAILS_API_TOKEN  | YOUR_API_TOKEN |
+| FLOWDOCK_RAILS_ENABLED    | Explicitly enable pushing for anything else than production.| "true" |
+| FLOWDOCK_RAILS_NAME       | Set the name of your project| Rails.application.class.parent_name |
+| FLOWDOCK_RAILS_FROM_NAME  | Name for the sender| Marv |
+| FLOWDOCK_RAILS_FROM_EMAIL | Email for the sender| marv@dreimannzelt.de |
+| FLOWDOCK_RAILS_FORMAT     | Format of output of attributes and changes. Possible values: "table",  "json" | "table" |
+
 
 ## TODO
 
 1. Spec, specs, specs, specs!
 2. Asynchronous and background job options
 3. Option for enabling/disabling specific events (create/update)
-4 Option for notification of deletion
+4. Option for notification of deletion
 5. Better documentation on how to override the content for the notifications
 
 ## Thanks to
