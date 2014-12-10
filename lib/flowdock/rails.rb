@@ -54,13 +54,32 @@ module Flowdock
 
     private
 
+    def formatted_attributes_for_flow(hash, changes=false)
+      case ENV["FLOWDOCK_RAILS_FORMAT"]
+      when "json"
+        "<pre>#{ JSON.pretty_generate(hash) }</pre>"
+      else
+        if hash.any?
+          %Q{
+            <table class="diff">
+              <tbody>
+                #{ hash.map{|k,v| "<tr><th>#{k}</th><td>#{changes ? v.first : v}</td><td>#{changes ? v.last : ""}</td></tr>" }.join("\n") }
+              </tbody>
+            </table>
+          }.strip
+        else
+          "<pre>Nothing to show!</pre>"
+        end
+      end
+    end
+
     def push_create_notification_to_flow
       self.class.push_to_flow(
         subject: "#{self.class.model_name.human} created",
         content: %Q{
           <h2>#{self.class.model_name.human} created</h2>
           <h3>Attributes</h3>
-          <pre>#{JSON.pretty_generate(self.attributes)}</pre>
+          #{formatted_attributes_for_flow self.attributes}
         },
         tags: [self.class.model_name.param_key, "resource", "created"]
       )
@@ -72,9 +91,9 @@ module Flowdock
         content: %Q{
           <h2>#{self.class.model_name.human} updated</h2>
           <h3>Changes</h3>
-          <pre>#{JSON.pretty_generate(self.changes)}</pre>
+          #{formatted_attributes_for_flow self.changes, true}
           <h3>Attributes</h3>
-          <pre>#{JSON.pretty_generate(self.attributes)}</pre>
+          #{formatted_attributes_for_flow self.attributes}
         },
         tags: [self.class.model_name.param_key, "resource", "updated"]
       )
