@@ -13,7 +13,7 @@ module Flowdock
           flowdock_rails_options.reverse_merge(
             api_token: api_token,
             source: "Flowdock Notifier",
-            project: ::Rails.application.class.parent_name,
+            project: ( ENV["FLOWDOCK_RAILS_NAME"] || ::Rails.application.class.parent_name ).parameterize,
             from: {
               name: "Marv",
               address: "marv@dreimannzelt.de"
