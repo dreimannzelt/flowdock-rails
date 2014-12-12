@@ -1,0 +1,8 @@
+en:
+  flowdock_rails:
+    nothing_to_show: Nothing to show
+    attributes: Attributes
+    changes: Changes
+    resource:
+      created: "%{klass} created"
+      updated: "%{klass} updated"

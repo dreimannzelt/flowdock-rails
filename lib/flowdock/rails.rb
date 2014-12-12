@@ -1,6 +1,7 @@
-require "flowdock/rails/version"
-require "flowdock"
-require "json"
+require 'flowdock/rails/engine'
+require 'flowdock/rails/version'
+require 'flowdock'
+require 'json'
 
 module Flowdock
   module Rails
@@ -68,17 +69,17 @@ module Flowdock
             </table>
           }.strip
         else
-          "<pre>Nothing to show!</pre>"
+          "<pre>#{I18n.t :nothing_to_show, scope: :flowdock_rails}</pre>"
         end
       end
     end
 
     def push_create_notification_to_flow
       self.class.push_to_flow(
-        subject: "#{self.class.model_name.human} created",
+        subject: I18n.t(:"resource.created", klass: self.class.model_name.human, scope: :flowdock_rails),
         content: %Q{
-          <h2>#{self.class.model_name.human} created</h2>
-          <h3>Attributes</h3>
+          <h2>#{I18n.t :"resource.created", klass: self.class.model_name.human, scope: :flowdock_rails }</h2>
+          <h3>#{I18n.t :"attributes", scope: :flowdock_rails }</h3>
           #{formatted_attributes_for_flow self.attributes}
         },
         tags: [self.class.model_name.param_key, "resource", "created", ::Rails.env]
@@ -87,12 +88,12 @@ module Flowdock
 
     def push_update_notification_to_flow
       self.class.push_to_flow(
-        subject: "#{self.class.model_name.human} updated",
+        subject: I18n.t(:"resource.updated", klass: self.class.model_name.human, scope: :flowdock_rails),
         content: %Q{
-          <h2>#{self.class.model_name.human} updated</h2>
-          <h3>Changes</h3>
+          <h2>#{I18n.t :"resource.updated", klass: self.class.model_name.human, scope: :flowdock_rails }</h2>
+          <h3>#{I18n.t :"changes", scope: :flowdock_rails }</h3>
           #{formatted_attributes_for_flow self.changes, true}
-          <h3>Attributes</h3>
+          <h3>#{I18n.t :"attributes", scope: :flowdock_rails }</h3>
           #{formatted_attributes_for_flow self.attributes}
         },
         tags: [self.class.model_name.param_key, "resource", "updated", ::Rails.env]
